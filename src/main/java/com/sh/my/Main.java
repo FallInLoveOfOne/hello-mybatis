@@ -1,5 +1,6 @@
 package com.sh.my;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -8,9 +9,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
+@Slf4j
 public class Main {
 
     public static void HelloMybatis() {
+        log.info("Hello MyBatis!");
         // 1. 数据源（这里用MyBatis内置简单连接池 PooledDataSource）
         PooledDataSource dataSource = new PooledDataSource();
         dataSource.setDriver("com.mysql.cj.jdbc.Driver");
@@ -36,7 +39,7 @@ public class Main {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
             User user = userMapper.selectUserById(1);
-            System.out.println(user.getId() + ", " + user.getName());
+            log.info("查询到用户信息: ID={}, Name={}", user.getId(), user.getName());
         }
     }
 

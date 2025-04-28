@@ -1,0 +1,18 @@
+<configuration>
+    <!-- 控制台输出日志 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志级别：TRACE, DEBUG, INFO, WARN, ERROR -->
+    <root level="INFO">
+        <appender-ref ref="console"/>
+    </root>
+
+    <!-- MyBatis 输出 SQL 日志 -->
+    <logger name="org.mybatis" level="DEBUG">
+        <appender-ref ref="console"/>
+    </logger>
+</configuration>
