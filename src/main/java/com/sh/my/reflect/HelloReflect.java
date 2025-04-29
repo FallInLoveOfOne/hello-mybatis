@@ -16,6 +16,10 @@ public class HelloReflect {
     public static void main(String[] args) throws Exception {
         Show show = new Show();
         reflectFiled(show, "name");
+        reflectMethod(show, "show", new Object[]{888}, int.class);
+        reflectMethod(show, "show", null, null);
+
+        log.info("Show classLoader: {}", Show.class.getClassLoader().getClass().getName());
     }
 
 
@@ -35,9 +39,6 @@ public class HelloReflect {
 
         Object set = declaredField.get(target);
         log.info("filed value: {}", set);
-
-        reflectMethod(target, "show", new Object[]{888}, int.class);
-        reflectMethod(target, "show", null, null);
     }
 
     /**
