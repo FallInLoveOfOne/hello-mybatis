@@ -40,12 +40,13 @@ public class ReflectImpProxy {
          * 通过反射模拟动态代理
          * 调用目标方法
          *
-         * @param method
+         * @param methodName
          * @param args
          * @return
          */
-        public Object callMethod(Method method, Object[] args) throws Exception {
+        public Object callMethod(String methodName, Object... args) throws Exception {
             log.info("proxy start");
+            Method method = ITarget.class.getDeclaredMethod(methodName);
             method.setAccessible(true);
             Object result = method.invoke(target, args);
             log.info("invoke result: {}", result);
@@ -59,7 +60,7 @@ public class ReflectImpProxy {
         ITarget target = new Target();
         ReflectProxy proxy = new ReflectProxy(target);
         try {
-            proxy.callMethod(target.getClass().getDeclaredMethod("sayHello"), null);
+            proxy.callMethod("sayHello");
         } catch (Exception e) {
             e.printStackTrace();
         }
