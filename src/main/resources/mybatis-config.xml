@@ -28,7 +28,7 @@
       <dataSource type="POOLED">
         <property name="driver" value="com.mysql.cj.jdbc.Driver" />
         <property name="url"
-          value="jdbc:mysql://127.0.0.1:3506/ttttt?serverTimezone=UTC+8&amp;useUnicode=true&amp;characterEncoding=UTF-8" />
+          value="jdbc:mysql://127.0.0.1:3506/ttttt?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8" />
         <property name="username" value="${dbuser}" />
         <property name="password" value="${dbpass}" />
       </dataSource>
@@ -40,8 +40,10 @@
   <mappers>
     <!-- <mapper class="com.sh.my.UserMapper" /> -->
     <!-- 推荐扫描包方式 -->
-    <!-- <package name="com.sh.my.mybatis.mapper" /> -->
-    <mapper resource="mapper/UserMapper.xml" />
+    <!-- sql注解方式或xml与Mappper在同一个包下，可以通过如下扫描包的方式注册Mapper，且pom需要配置xml资源 -->
+    <package name="com.sh.my.mybatis.mapper" />
+    <!-- xml与Mapper不在同一个包下，需要通过如下xml文件注册 -->
+    <!-- <mapper resource="mapper/UserMapper.xml" /> -->
   </mappers>
 
 </configuration>
