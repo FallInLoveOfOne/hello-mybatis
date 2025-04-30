@@ -17,13 +17,18 @@
     <setting name="aggressiveLazyLoading" value="false" />
   </settings>
 
+  <typeAliases>
+    <package name="com.sh.my.mybatis.model" />
+  </typeAliases>
+
   <!-- 数据源配置（需根据实际数据库修改） -->
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC" />
       <dataSource type="POOLED">
         <property name="driver" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://127.0.0.1:3506/ttttt?serverTimezone=UTC" />
+        <property name="url"
+          value="jdbc:mysql://127.0.0.1:3506/ttttt?serverTimezone=UTC+8&amp;useUnicode=true&amp;characterEncoding=UTF-8" />
         <property name="username" value="${dbuser}" />
         <property name="password" value="${dbpass}" />
       </dataSource>
@@ -33,7 +38,10 @@
 
   <!-- 映射器配置（示例） -->
   <mappers>
-    <mapper class="com.sh.my.UserMapper" />
+    <!-- <mapper class="com.sh.my.UserMapper" /> -->
+    <!-- 推荐扫描包方式 -->
+    <!-- <package name="com.sh.my.mybatis.mapper" /> -->
+    <mapper resource="mapper/UserMapper.xml" />
   </mappers>
 
 </configuration>

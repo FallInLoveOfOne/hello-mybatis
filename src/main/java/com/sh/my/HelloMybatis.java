@@ -3,6 +3,7 @@ package com.sh.my;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
@@ -11,6 +12,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+
+import com.sh.my.mybatis.mapper.UserMapper;
+import com.sh.my.mybatis.model.User;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +26,8 @@ public class HelloMybatis {
         // 1. 数据源（这里用MyBatis内置简单连接池 PooledDataSource）
         PooledDataSource dataSource = new PooledDataSource();
         dataSource.setDriver("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3506/ttttt?serverTimezone=UTC");
+        dataSource.setUrl(
+                "jdbc:mysql://127.0.0.1:3506/ttttt?serverTimezone=UTC+8&useUnicode=true&characterEncoding=UTF-8");
         dataSource.setUsername("root");
         dataSource.setPassword("root");
 
@@ -34,9 +39,20 @@ public class HelloMybatis {
 
         // 4. 核心配置
         Configuration configuration = new Configuration(environment);
-        configuration.addMapper(UserMapper.class); // 注册Mapper
+        // sql已注解的方式在Mapper接口中，如何注册
+        // configuration.addMappers("com.sh.my.mybatis.mapper");
+        // configuration.addMapper(UserMapper.class);
         configuration.getTypeAliasRegistry().registerAlias(User.class); // 注册类型别名
         configuration.setCacheEnabled(true);// 开启二级缓存
+        // xml结合namespace方法，通过如下方式注册
+        String resource = "mapper/UserMapper.xml";
+        try (InputStream input = Resources.getResourceAsStream(resource)) {
+            XMLMapperBuilder mapperBuilder = new XMLMapperBuilder(
+                    input, configuration, resource, configuration.getSqlFragments());
+            mapperBuilder.parse();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load MyBatis mapper", e);
+        }
 
         // 5. 创建SqlSessionFactory
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);

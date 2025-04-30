@@ -1,4 +1,4 @@
-package com.sh.my;
+package com.sh.my.mybatis.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
