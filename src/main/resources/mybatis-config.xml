@@ -28,7 +28,7 @@
       <dataSource type="POOLED">
         <property name="driver" value="com.mysql.cj.jdbc.Driver" />
         <property name="url"
-          value="jdbc:mysql://127.0.0.1:3506/ttttt?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8" />
+          value="jdbc:mysql://127.0.0.1:3306/test?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8" />
         <property name="username" value="${dbuser}" />
         <property name="password" value="${dbpass}" />
       </dataSource>
