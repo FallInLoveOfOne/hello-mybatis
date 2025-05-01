@@ -26,7 +26,7 @@ public class HelloMybatis {
         PooledDataSource dataSource = new PooledDataSource();
         dataSource.setDriver("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl(
-                "jdbc:mysql://127.0.0.1:3506/ttttt?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8");
+                "jdbc:mysql://127.0.0.1:3306/test?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8");
         dataSource.setUsername("root");
         dataSource.setPassword("root");
 
