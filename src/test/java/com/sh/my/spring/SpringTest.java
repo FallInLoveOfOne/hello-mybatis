@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import com.sh.my.spring.beans.HelloUserBean;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -25,6 +26,9 @@ public class SpringTest {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private HelloUserBean helloUserBean;
 
     @Test
     public void testSelectById() {
@@ -43,4 +47,10 @@ public class SpringTest {
         // int i = 1 / 0; // 故意制造异常
     }
 
+    @Test
+    public void testFactoryBean() {
+        int age = helloUserBean.getAge();
+        String name = helloUserBean.getName();
+        log.info("HelloUserBean name={}, age={}", name, age);
+    }
 }
