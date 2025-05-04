@@ -1,0 +1,29 @@
+@startuml
+actor Developer
+
+Developer -> AnnotationConfigApplicationContext : new()
+AnnotationConfigApplicationContext -> GenericApplicationContext : super()
+GenericApplicationContext -> AbstractApplicationContext : super()
+AbstractApplicationContext -> DefaultResourceLoader : super()
+
+Developer -> AnnotationConfigApplicationContext : register(AppConfig.class)
+Developer -> AnnotationConfigApplicationContext : refresh()
+
+AnnotationConfigApplicationContext -> AbstractApplicationContext : refresh()
+AbstractApplicationContext -> AbstractApplicationContext : prepareRefresh()
+AbstractApplicationContext -> GenericApplicationContext : obtainFreshBeanFactory()
+GenericApplicationContext -> GenericApplicationContext : refreshBeanFactory()
+GenericApplicationContext -> DefaultListableBeanFactory : create new factory
+GenericApplicationContext -> AbstractApplicationContext : return BeanFactory
+
+AbstractApplicationContext -> AbstractApplicationContext : prepareBeanFactory(factory)
+AbstractApplicationContext -> AbstractApplicationContext : postProcessBeanFactory(factory)
+AbstractApplicationContext -> AbstractApplicationContext : invokeBeanFactoryPostProcessors(factory)
+AbstractApplicationContext -> AbstractApplicationContext : registerBeanPostProcessors(factory)
+AbstractApplicationContext -> AbstractApplicationContext : initMessageSource()
+AbstractApplicationContext -> AbstractApplicationContext : initApplicationEventMulticaster()
+AbstractApplicationContext -> AbstractApplicationContext : onRefresh()
+AbstractApplicationContext -> AbstractApplicationContext : registerListeners()
+AbstractApplicationContext -> AbstractApplicationContext : finishBeanFactoryInitialization(factory)
+AbstractApplicationContext -> AbstractApplicationContext : finishRefresh()
+@enduml

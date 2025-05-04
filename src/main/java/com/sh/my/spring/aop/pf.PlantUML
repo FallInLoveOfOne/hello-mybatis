@@ -1,0 +1,18 @@
+@startuml
+actor Client
+Client -> ProxyFactory : setTarget(Object target)
+Client -> ProxyFactory : addAdvisor(Advisor advisor)
+Client -> ProxyFactory : getProxy()
+
+ProxyFactory -> ProxyCreatorSupport : createAopProxy()
+ProxyCreatorSupport -> AopProxyFactory : createAopProxy(AdvisedSupport config)
+AopProxyFactory --> ProxyCreatorSupport : return AopProxy (JdkDynamicAopProxy or CglibAopProxy)
+
+ProxyCreatorSupport -> AopProxy : getProxy()
+AopProxy -> AdvisedSupport : getAdvisors()
+AopProxy -> AdvisedSupport : getTargetSource()
+AopProxy --> ProxyCreatorSupport : return proxy instance
+
+ProxyCreatorSupport --> ProxyFactory : return proxy
+ProxyFactory --> Client : proxy instance
+@enduml
