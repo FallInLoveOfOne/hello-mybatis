@@ -6,7 +6,9 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Slf4j
 @Service
@@ -17,6 +19,9 @@ public class BusyService {
 
     @Resource
     private JdbcTemplate jdbcTemplate;
+
+    @Resource
+    private PlatformTransactionManager transactionManager;
 
     @Transactional(rollbackFor = Exception.class)
     public void insertUser(User user) {
@@ -41,5 +46,19 @@ public class BusyService {
     public void insertByJdbcTemplate(User user) {
         jdbcTemplate.update("INSERT INTO user (name) VALUES (?)", user.getName());
         //int i = 1 / 0;
+    }
+
+    /**
+     * JdbcTemplate 是用来执行 SQL 的工具：query(), update(), execute() 等。
+     * TransactionTemplate 是用来包裹一段逻辑，使其运行在一个受控事务上下文中。
+     */
+    public void saveUserAndAccount(User user) {
+        TransactionTemplate txTemplate = new TransactionTemplate(transactionManager);
+
+        txTemplate.executeWithoutResult(status -> {
+            jdbcTemplate.update("INSERT INTO user (name) VALUES (?)", user.getName());
+            // 模拟异常触发回滚
+            // int x = 1 / 0;
+        });
     }
 }

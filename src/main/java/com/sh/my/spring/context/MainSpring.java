@@ -34,6 +34,8 @@ public class MainSpring {
 
             busyService.insertByJdbcTemplate(new User(null, "jdbcTemplate transactional"));
 
+            busyService.saveUserAndAccount(new User(null, "TransactionTemplate managed"));
+
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
