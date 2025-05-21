@@ -7,7 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Slf4j
@@ -46,6 +49,34 @@ public class BusyService {
     public void insertByJdbcTemplate(User user) {
         jdbcTemplate.update("INSERT INTO user (name) VALUES (?)", user.getName());
         //int i = 1 / 0;
+    }
+
+    /**
+     * 通过TransactionManager手动控制事务
+     * TransactionTemplate是对TransactionManager的封装简化
+     */
+    public void insertByTransactionManager(User user) {
+        // 创建事务定义
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setName("saveUserTx");
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+
+        // 开启事务
+        TransactionStatus status = transactionManager.getTransaction(def);
+
+        try {
+            // 执行数据库操作
+            jdbcTemplate.update("INSERT INTO user (name) VALUES (?)", user.getName());
+
+
+            //int i = 1 / 0;
+            // 提交事务
+            transactionManager.commit(status);
+        } catch (Exception e) {
+            // 回滚事务
+            transactionManager.rollback(status);
+            throw e;
+        }
     }
 
     /**
