@@ -4,6 +4,7 @@ import com.sh.my.mybatis.mapper.UserMapper;
 import com.sh.my.mybatis.model.User;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,9 @@ public class BusyService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private JdbcTemplate jdbcTemplate;
 
     @Transactional(rollbackFor = Exception.class)
     public void insertUser(User user) {
@@ -31,5 +35,11 @@ public class BusyService {
         } catch (Exception e) {
             log.error("非代理调用，事务回滚失效={}", e.getMessage());
         }
+    }
+
+    @Transactional
+    public void insertByJdbcTemplate(User user) {
+        jdbcTemplate.update("INSERT INTO user (name) VALUES (?)", user.getName());
+        //int i = 1 / 0;
     }
 }

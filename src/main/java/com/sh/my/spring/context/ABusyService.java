@@ -21,6 +21,7 @@ public class ABusyService {
             busyService.insertUser(user);
         } catch (Exception e) {
             log.error("捕捉事务传播异常", e);
+            // 吞掉异常，会导致Transaction rolled back because it has been marked as rollback-only
         }
     }
 }
