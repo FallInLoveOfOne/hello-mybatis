@@ -132,14 +132,14 @@ class TestApi {
 }
 
 @Component
-public class NioHttpServer {
+public class MiniRestApp {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
 
     @PostConstruct
     public void start() {
         Router.register(new TestApi());
-        new Thread(this::runServer, "NioHttpServer-Thread").start();
+        new Thread(this::runServer, "MiniRestApp-Thread").start();
     }
 
     private void runServer() {
