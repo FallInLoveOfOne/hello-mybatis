@@ -14,7 +14,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
-@Component
+//@Component
 public class NioHttpServer {
 
     @PostConstruct
