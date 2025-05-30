@@ -1,9 +1,14 @@
 package com.sh.my.spring.mvc;
 
 import com.sh.my.spring.context.MainConfig;
+import com.sh.my.spring.mvc.filter.EncodingFilter;
+import com.sh.my.spring.mvc.filter.LogFilter;
+import jakarta.servlet.Filter;
 import jakarta.servlet.ServletRegistration;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.tomcat.util.descriptor.web.FilterDef;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -60,6 +65,9 @@ public class TomcatStartup {
             File baseDir = Files.createTempDirectory("tomcat-base").toFile();
             Context ctx = tomcat.addContext("", baseDir.getAbsolutePath());
 
+            // ✅ 注册 Filter —— 必须在获取 ServletContext 之前
+            registerFilter(ctx);
+
             // 创建 Spring 容器
             AnnotationConfigWebApplicationContext springContext = new AnnotationConfigWebApplicationContext();
             springContext.setServletContext(ctx.getServletContext());  // 绑定 ServletContext
@@ -86,6 +94,30 @@ public class TomcatStartup {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    private static FilterDef createFilterDef(String name, Filter filter) {
+        FilterDef def = new FilterDef();
+        def.setFilterName(name);
+        def.setFilter(filter);
+        def.setFilterClass(filter.getClass().getName());
+        return def;
+    }
+
+    private static FilterMap createFilterMap(String name, String urlPattern) {
+        FilterMap map = new FilterMap();
+        map.setFilterName(name);
+        map.addURLPattern(urlPattern);
+        return map;
+    }
+
+    private static void registerFilter(Context ctx) {
+        ctx.addFilterDef(createFilterDef("encodingFilter", new EncodingFilter()));
+        ctx.addFilterMap(createFilterMap("encodingFilter", "/*"));
+
+        ctx.addFilterDef(createFilterDef("logFilter", new LogFilter()));
+        ctx.addFilterMap(createFilterMap("logFilter", "/*"));
     }
 
 
