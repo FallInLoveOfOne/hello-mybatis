@@ -20,6 +20,7 @@ public class EncodingFilter implements Filter {
         if (configEncoding != null) {
             this.encoding = configEncoding;
         }
+        log.info("[EncodingFilter] 初始化完成");
     }
 
     @Override
