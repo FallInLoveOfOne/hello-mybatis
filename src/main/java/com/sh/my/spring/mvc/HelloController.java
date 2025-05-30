@@ -2,6 +2,7 @@ package com.sh.my.spring.mvc;
 
 import com.sh.my.mybatis.model.User;
 import com.sh.my.spring.context.HelloMvcBean;
+import com.sh.my.spring.mvc.vo.HelloVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -37,5 +38,10 @@ public class HelloController {
     @PostMapping("/upload")
     public String upload(MultipartFile file) {
         return "upload";
+    }
+
+    @PostMapping("/helloVo")
+    public HelloVO helloVo(@RequestBody HelloVO vo) {
+        return vo;
     }
 }
