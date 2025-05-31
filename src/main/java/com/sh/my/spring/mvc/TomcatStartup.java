@@ -9,6 +9,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
+import org.fusesource.jansi.AnsiConsole;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -54,6 +55,8 @@ public class TomcatStartup {
     }*/
 
     public static void main(String[] args) {
+        System.setProperty("logback.ansi.enabled", "true"); //
+        AnsiConsole.systemInstall();
         try {
             Tomcat tomcat = new Tomcat();
             tomcat.setPort(8787);
@@ -93,6 +96,8 @@ public class TomcatStartup {
             tomcat.getServer().await();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            AnsiConsole.systemUninstall();
         }
     }
 
