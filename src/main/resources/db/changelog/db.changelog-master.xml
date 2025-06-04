@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+           http://www.liquibase.org/xml/ns/dbchangelog
+           https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!-- 在此 include 所有子 changelog 文件 -->
+    <!--<include file="db/changelog/generated-changelog.xml" relativeToChangelogFile="true"/>-->
+
+    <include file="v20250604_update_user.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

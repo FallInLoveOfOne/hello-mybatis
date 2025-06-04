@@ -1,0 +1,42 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+      http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="20250604-01" author="9527" runOnChange="false" runAlways="false" context="dev">
+        <!--校验字段是否存在-->
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <columnExists tableName="user" columnName="sex"/>
+                </not>
+                <not>
+                    <columnExists tableName="user" columnName="age"/>
+                </not>
+            </and>
+        </preConditions>
+        <!-- 插入两个字段 -->
+        <addColumn tableName="user">
+            <column name="sex" type="varchar(10)"/>
+            <column name="age" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20250604-02" author="9527" runOnChange="false" runAlways="false" context="dev">
+        <!-- 变更一个字段，比如修改字段类型或默认值 -->
+        <modifyDataType tableName="user" columnName="name" newDataType="varchar(222)"/>
+        <!-- 如果是修改默认值，可以用下面的change-->
+        <!--
+        <modifyDefaultValue tableName="user" columnName="username" defaultValue="guest"/>
+        -->
+    </changeSet>
+
+    <changeSet id="20250604-03" author="9527" runOnChange="false" runAlways="false" context="dev">
+        <addColumn tableName="user">
+            <column name="status" type="int"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

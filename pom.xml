@@ -207,6 +207,13 @@
             <version>2.19.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.31.1</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -240,6 +247,16 @@
         </resources>
 
         <plugins>
+            <!-- 关键插件：设置 Java 编译版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version> <!-- 可换为最新版本 -->
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
             <!-- Maven JAR 插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -253,6 +270,31 @@
                     </archive>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.31.1</version>
+                <configuration>
+                    <!-- 主 changelog -->
+                    <changeLogFile>${project.basedir}/src/main/resources/db/changelog/db.changelog-master.xml
+                    </changeLogFile>
+                    <!-- 如果你要生成 changelog，这一项必须有 -->
+                    <outputChangeLogFile>${project.basedir}/src/main/resources/db/changelog/generated-changelog.xml
+                    </outputChangeLogFile>
+                    <url>jdbc:mysql://localhost:3506/test?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;allowPublicKeyRetrieval=true&amp;maxExecutionTime=0</url>
+                    <username>root</username>
+                    <password>root</password>
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <!-- 其他选项（可选） -->
+                    <verbose>true</verbose>
+                    <logging>debug</logging>
+                </configuration>
+                <dependencies>
+                </dependencies>
+            </plugin>
+
+
         </plugins>
     </build>
 
