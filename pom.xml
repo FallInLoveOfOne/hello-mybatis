@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.sh.my</groupId>
     <artifactId>hello-mybatis</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -233,9 +233,27 @@
     </repositories>
 
     <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <resources>
+            <!-- 只过滤 db/changelog 目录下的文件 -->
             <resource>
                 <directory>src/main/resources</directory>
+                <includes>
+                    <include>db/changelog/*.xml</include>
+                </includes>
+                <!-- 开启过滤，替换占位符 -->
+                <filtering>true</filtering>
+            </resource>
+
+            <!-- 其他资源，原样复制，不过滤 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <!-- 排除上面已处理的 -->
+                    <exclude>db/changelog/*.xml</exclude>
+                </excludes>
+                <!-- 不过滤，保持原样 -->
+                <filtering>false</filtering>
             </resource>
             <resource>
                 <directory>src/main/java</directory>
@@ -245,6 +263,11 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
+
+        <filters>
+            <filter>${basedir}/pom.xml</filter>
+            <filter>${project.basedir}/src/main/resources/application.properties</filter>
+        </filters>
 
         <plugins>
             <!-- 关键插件：设置 Java 编译版本 -->
@@ -277,15 +300,17 @@
                 <version>4.31.1</version>
                 <configuration>
                     <!-- 主 changelog -->
-                    <changeLogFile>${project.basedir}/src/main/resources/db/changelog/db.changelog-master.xml
+                    <changeLogFile>
+                        ${project.basedir}/src/main/resources/db/changelog/db.changelog-master.xml
                     </changeLogFile>
                     <!-- 如果你要生成 changelog，这一项必须有 -->
-                    <outputChangeLogFile>${project.basedir}/src/main/resources/db/changelog/generated-changelog.xml
+                    <outputChangeLogFile>
+                        ${project.basedir}/src/main/resources/db/changelog/generated-changelog.xml
                     </outputChangeLogFile>
-                    <url>jdbc:mysql://localhost:3506/test?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;allowPublicKeyRetrieval=true&amp;maxExecutionTime=0</url>
-                    <username>root</username>
-                    <password>root</password>
-                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <url>${db.url}</url>
+                    <username>${db.username}</username>
+                    <password>${db.password}</password>
+                    <driver>${db.driver}</driver>
                     <!-- 其他选项（可选） -->
                     <verbose>true</verbose>
                     <logging>debug</logging>

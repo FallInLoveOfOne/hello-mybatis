@@ -1,22 +1,19 @@
 package com.sh.my.spring;
 
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sh.my.mybatis.mapper.UserMapper;
 import com.sh.my.mybatis.model.User;
+import com.sh.my.spring.beans.HelloUserBean;
 import com.sh.my.spring.context.MainConfig;
 
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-import com.sh.my.spring.beans.HelloUserBean;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,7 +30,7 @@ public class SpringTest {
     @Test
     public void testSelectById() {
         User user = userMapper.selectUserById(1);
-        log.info("用户={}", user.getName());
+        log.info("用户={}", user == null ? "null" : user.getName());
     }
 
     @Test
